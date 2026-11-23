@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Andhra Pradesh - Health Care Awareness</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+    body { display: flex; min-height: 100vh; background: #f4f6f9; color: #222; }
+
+    /* Sidebar */
+    .sidebar {
+      width: 260px;
+      background: #0b3c78;
+      color: #fff;
+      padding: 24px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .brand { text-align: center; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 16px; }
+    .emblem-img {
+      width: 76px; height: 76px; margin: 0 auto 10px;
+      border-radius: 50%; background: #fff; object-fit: cover;
+      border: 3px solid #f5b700; display: block;
+    }
+    .brand h2 { font-size: 16px; letter-spacing: 0.5px; }
+    .brand p { font-size: 11px; opacity: 0.85; margin-top: 4px; }
+
+    .menu-title { font-size: 11px; text-transform: uppercase; opacity: 0.7; margin-bottom: 8px; padding-left: 8px; }
+    .nav-btn {
+      width: 100%; text-align: left; background: transparent; border: none;
+      color: #e6eef8; padding: 10px 12px; border-radius: 6px; cursor: pointer;
+      font-size: 14px; margin-bottom: 4px; transition: 0.2s;
+    }
+    .nav-btn:hover, .nav-btn.active { background: #1656a6; color: #fff; font-weight: bold; }
+
+    /* Main Content */
+    .main { flex: 1; padding: 28px 32px; }
+    .header {
+      background: #fff; padding: 18px 22px; border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06); margin-bottom: 18px;
+      display: flex; align-items: center; gap: 16px;
+    }
+    .header-img {
+      width: 54px; height: 54px; border-radius: 50%; object-fit: cover;
+      border: 2px solid #0b3c78; background: #fff;
+    }
+    .header h1 { font-size: 20px; color: #0b3c78; }
+    .header p { font-size: 13px; color: #555; margin-top: 3px; }
+    .status { color: #15803d; font-size: 13px; font-weight: bold; margin-bottom: 18px; }
+
+    .section-card {
+      background: #fff; padding: 22px; border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06); margin-bottom: 22px;
+    }
+    .section-card h3 { font-size: 17px; margin-bottom: 16px; color: #1e293b; }
+
+    .stats-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px; margin-bottom: 10px;
+    }
+    .stat-box { background: #f8fafc; border: 1px solid #e2e8f0; padding: 14px; border-radius: 8px; }
+    .stat-label { font-size: 12px; color: #64748b; }
+    .stat-val { font-size: 24px; font-weight: bold; color: #0f172a; margin-top: 6px; }
+    .stat-val.gain { color: #15803d; }
+
+    /* Bar Chart */
+    .chart-wrap {
+      display: flex; align-items: flex-end; gap: 28px;
+      height: 210px; padding: 20px 10px 10px; border-bottom: 2px solid #cbd5e1;
+      margin-top: 12px;
+    }
+    .bar-group { flex: 1; display: flex; flex-direction: column; align-items: center; height: 100%; justify-content: flex-end; }
+    .bars { display: flex; align-items: flex-end; gap: 6px; height: 160px; }
+    .bar { width: 22px; border-radius: 4px 4px 0 0; transition: 0.3s; }
+    .bar.before { background: #64748b; }
+    .bar.after { background: #1d4ed8; }
+    .bar-label { font-size: 12px; margin-top: 8px; color: #334155; font-weight: bold; }
+
+    .legend { display: flex; gap: 20px; font-size: 12px; color: #475569; margin-top: 12px; }
+    .legend span { display: inline-flex; align-items: center; gap: 6px; }
+    .dot { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid #e2e8f0; font-size: 14px; }
+    th { background: #f1f5f9; color: #0f172a; }
+
+    .assistant-box { display: flex; gap: 10px; margin-top: 12px; }
+    .assistant-box input {
+      flex: 1; padding: 10px 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px;
+    }
+    .assistant-box button {
+      padding: 10px 16px; background: #0b3c78; color: #fff; border: none;
+      border-radius: 6px; cursor: pointer; font-size: 14px;
+    }
+    .assistant-reply {
+      margin-top: 14px; padding: 12px; background: #f8fafc;
+      border-left: 4px solid #1d4ed8; border-radius: 4px; font-size: 14px;
+    }
+
+    @media (max-width: 768px) {
+      body { flex-direction: column; }
+      .sidebar { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <aside class="sidebar">
+    <div class="brand">
+      <img src="AP GOVERNMENT LOGO.png" alt="AP Government Logo" class="emblem-img" />
+      <h2>AP HEALTH AWARENESS</h2>
+      <p>HEALTHCARE AWARENESS &amp; IMPACT</p>
+    </div>
+
+    <div>
+      <div class="menu-title">Main Menu</div>
+      <button class="nav-btn active" onclick="openTab('dashboard', this)">Dashboard</button>
+      <button class="nav-btn" onclick="openTab('programs', this)">Awareness Programs</button>
+      <button class="nav-btn" onclick="openTab('districts', this)">District Monitoring</button>
+      <button class="nav-btn" onclick="openTab('analysis', this)">Impact Analysis</button>
+      <button class="nav-btn" onclick="openTab('assistant', this)">Health Assistant</button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="header">
+      <img src="AP GOVERNMENT LOGO.png" alt="AP Logo" class="header-img" />
+      <div>
+        <h1>ANDHRA PRADESH - HEALTH CARE AWARENESS</h1>
+        <p>Community Health Care Awareness Programs and Impact Monitoring System</p>
+      </div>
+    </div>
+
+    <div class="status">Application is running successfully</div>
+
+    <!-- Dashboard Tab -->
+    <section id="dashboard" class="tab-content active">
+      <div class="section-card">
+        <h3>Monitoring Dashboard</h3>
+        <div class="stats-grid">
+          <div class="stat-box">
+            <div class="stat-label">Total Programs</div>
+            <div class="stat-val">5</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">Total Participants</div>
+            <div class="stat-val">7,800</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">Checkups Completed</div>
+            <div class="stat-val">6,380</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">Avg Impact Gain</div>
+            <div class="stat-val gain">+41.4%</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-card">
+        <h3>Awareness Impact: Before vs After Program</h3>
+        <div class="chart-wrap">
+          <div class="bar-group">
+            <div class="bars">
+              <div class="bar before" style="height: 45%;" title="Before: 45%"></div>
+              <div class="bar after" style="height: 85%;" title="After: 85%"></div>
+            </div>
+            <div class="bar-label">Prog 1</div>
+          </div>
+          <div class="bar-group">
+            <div class="bars">
+              <div class="bar before" style="height: 40%;" title="Before: 40%"></div>
+              <div class="bar after" style="height: 82%;" title="After: 82%"></div>
+            </div>
+            <div class="bar-label">Prog 2</div>
+          </div>
+          <div class="bar-group">
+            <div class="bars">
+              <div class="bar before" style="height: 50%;" title="Before: 50%"></div>
+              <div class="bar after" style="height: 90%;" title="After: 90%"></div>
+            </div>
+            <div class="bar-label">Prog 3</div>
+          </div>
+          <div class="bar-group">
+            <div class="bars">
+              <div class="bar before" style="height: 38%;" title="Before: 38%"></div>
+              <div class="bar after" style="height: 78%;" title="After: 78%"></div>
+            </div>
+            <div class="bar-label">Prog 4</div>
+          </div>
+          <div class="bar-group">
+            <div class="bars">
+              <div class="bar before" style="height: 42%;" title="Before: 42%"></div>
+              <div class="bar after" style="height: 86%;" title="After: 86%"></div>
+            </div>
+            <div class="bar-label">Prog 5</div>
+          </div>
+        </div>
+        <div class="legend">
+          <span><i class="dot" style="background:#64748b;"></i> Before Awareness (%)</span>
+          <span><i class="dot" style="background:#1d4ed8;"></i> After Awareness (%)</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Awareness Programs Tab -->
+    <section id="programs" class="tab-content">
+      <div class="section-card">
+        <h3>Awareness Programs</h3>
+        <table>
+          <tr><th>Program</th><th>Focus Area</th><th>Participants</th><th>Status</th></tr>
+          <tr><td>Prog 1</td><td>Maternal &amp; Child Nutrition</td><td>1,650</td><td>Completed</td></tr>
+          <tr><td>Prog 2</td><td>Hygiene &amp; Sanitation Drive</td><td>1,500</td><td>Completed</td></tr>
+          <tr><td>Prog 3</td><td>Preventive NCD Screening</td><td>1,800</td><td>Active</td></tr>
+          <tr><td>Prog 4</td><td>Vector-Borne Disease Control</td><td>1,450</td><td>Active</td></tr>
+          <tr><td>Prog 5</td><td>Mental Health &amp; Wellness</td><td>1,400</td><td>Scheduled</td></tr>
+        </table>
+      </div>
+    </section>
+
+    <!-- District Monitoring Tab -->
+    <section id="districts" class="tab-content">
+      <div class="section-card">
+        <h3>District Monitoring</h3>
+        <table>
+          <tr><th>District</th><th>Camps Held</th><th>Checkups</th><th>Awareness Gain</th></tr>
+          <tr><td>Visakhapatnam</td><td>14</td><td>1,420</td><td>+43.2%</td></tr>
+          <tr><td>Guntur</td><td>12</td><td>1,290</td><td>+40.8%</td></tr>
+          <tr><td>Nellore</td><td>11</td><td>1,210</td><td>+42.1%</td></tr>
+          <tr><td>Kurnool</td><td>10</td><td>1,260</td><td>+39.6%</td></tr>
+          <tr><td>Tirupati</td><td>11</td><td>1,200</td><td>+41.3%</td></tr>
+        </table>
+      </div>
+    </section>
+
+    <!-- Impact Analysis Tab -->
+    <section id="analysis" class="tab-content">
+      <div class="section-card">
+        <h3>Impact Analysis</h3>
+        <p>Across <strong>5</strong> community healthcare awareness programs and <strong>7,800</strong> participants, <strong>6,380</strong> health checkups were completed with an average awareness improvement of <strong>+41.4%</strong>.</p>
+      </div>
+    </section>
+
+    <!-- Health Assistant Tab -->
+    <section id="assistant" class="tab-content">
+      <div class="section-card">
+        <h3>Health Assistant</h3>
+        <p>Ask about programs, participants, checkups, or impact metrics.</p>
+        <div class="assistant-box">
+          <input id="qInput" type="text" placeholder="Example: What is the avg impact gain?" />
+          <button onclick="askAssistant()">Ask</button>
+        </div>
+        <div id="qReply" class="assistant-reply">
+          Average impact gain is <strong>+41.4%</strong> across 5 programs with 7,800 participants and 6,380 completed checkups.
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    function openTab(tabId, btn) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      btn.classList.add('active');
+    }
+
+    function askAssistant() {
+      const q = document.getElementById('qInput').value.toLowerCase();
+      const reply = document.getElementById('qReply');
+      if (!q.trim()) {
+        reply.innerHTML = "Please enter a question about the awareness programs or impact.";
+        return;
+      }
+      if (q.includes("impact") || q.includes("gain")) {
+        reply.innerHTML = "The average awareness impact gain across all 5 programs is <strong>+41.4%</strong>.";
+      } else if (q.includes("checkup") || q.includes("participant")) {
+        reply.innerHTML = "There are <strong>7,800</strong> total participants and <strong>6,380</strong> completed checkups.";
+      } else if (q.includes("program")) {
+        reply.innerHTML = "There are <strong>5</strong> awareness programs covering nutrition, hygiene, NCD screening, vector-borne disease control, and mental health.";
+      } else {
+        reply.innerHTML = "Monitoring summary: 5 programs, 7,800 participants, 6,380 checkups completed, and +41.4% average impact gain.";
+      }
+    }
+  </script>
+</body>
+</html>
