@@ -1,292 +1,689 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Andhra Pradesh - Health Care Awareness</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
-    body { display: flex; min-height: 100vh; background: #f4f6f9; color: #222; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Service Project - Health & Awareness</title>
+    <!-- Chart.js for 2 Graphs -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary: #0f766e;
+            --primary-dark: #115e59;
+            --secondary: #f0fdfa;
+            --text-dark: #1e293b;
+            --text-muted: #475569;
+            --bg-light: #f8fafc;
+            --white: #ffffff;
+            --border: #e2e8f0;
+        }
 
-    /* Sidebar */
-    .sidebar {
-      width: 260px;
-      background: #0b3c78;
-      color: #fff;
-      padding: 24px 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-    .brand { text-align: center; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 16px; }
-    .emblem-img {
-      width: 76px; height: 76px; margin: 0 auto 10px;
-      border-radius: 50%; background: #fff; object-fit: cover;
-      border: 3px solid #f5b700; display: block;
-    }
-    .brand h2 { font-size: 16px; letter-spacing: 0.5px; }
-    .brand p { font-size: 11px; opacity: 0.85; margin-top: 4px; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            scroll-behavior: smooth;
+        }
 
-    .menu-title { font-size: 11px; text-transform: uppercase; opacity: 0.7; margin-bottom: 8px; padding-left: 8px; }
-    .nav-btn {
-      width: 100%; text-align: left; background: transparent; border: none;
-      color: #e6eef8; padding: 10px 12px; border-radius: 6px; cursor: pointer;
-      font-size: 14px; margin-bottom: 4px; transition: 0.2s;
-    }
-    .nav-btn:hover, .nav-btn.active { background: #1656a6; color: #fff; font-weight: bold; }
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
 
-    /* Main Content */
-    .main { flex: 1; padding: 28px 32px; }
-    .header {
-      background: #fff; padding: 18px 22px; border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.06); margin-bottom: 18px;
-      display: flex; align-items: center; gap: 16px;
-    }
-    .header-img {
-      width: 54px; height: 54px; border-radius: 50%; object-fit: cover;
-      border: 2px solid #0b3c78; background: #fff;
-    }
-    .header h1 { font-size: 20px; color: #0b3c78; }
-    .header p { font-size: 13px; color: #555; margin-top: 3px; }
-    .status { color: #15803d; font-size: 13px; font-weight: bold; margin-bottom: 18px; }
+        /* Navigation Bar */
+        header {
+            background-color: var(--primary);
+            color: var(--white);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
 
-    .section-card {
-      background: #fff; padding: 22px; border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.06); margin-bottom: 22px;
-    }
-    .section-card h3 { font-size: 17px; margin-bottom: 16px; color: #1e293b; }
+        .navbar {
+            max-width: 1200px;
+            margin: auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 20px;
+        }
 
-    .stats-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 16px; margin-bottom: 10px;
-    }
-    .stat-box { background: #f8fafc; border: 1px solid #e2e8f0; padding: 14px; border-radius: 8px; }
-    .stat-label { font-size: 12px; color: #64748b; }
-    .stat-val { font-size: 24px; font-weight: bold; color: #0f172a; margin-top: 6px; }
-    .stat-val.gain { color: #15803d; }
+        .logo {
+            font-size: 1.3rem;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
 
-    /* Bar Chart */
-    .chart-wrap {
-      display: flex; align-items: flex-end; gap: 28px;
-      height: 210px; padding: 20px 10px 10px; border-bottom: 2px solid #cbd5e1;
-      margin-top: 12px;
-    }
-    .bar-group { flex: 1; display: flex; flex-direction: column; align-items: center; height: 100%; justify-content: flex-end; }
-    .bars { display: flex; align-items: flex-end; gap: 6px; height: 160px; }
-    .bar { width: 22px; border-radius: 4px 4px 0 0; transition: 0.3s; }
-    .bar.before { background: #64748b; }
-    .bar.after { background: #1d4ed8; }
-    .bar-label { font-size: 12px; margin-top: 8px; color: #334155; font-weight: bold; }
+        .nav-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            list-style: none;
+        }
 
-    .legend { display: flex; gap: 20px; font-size: 12px; color: #475569; margin-top: 12px; }
-    .legend span { display: inline-flex; align-items: center; gap: 6px; }
-    .dot { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 0.85rem;
+            padding: 6px 10px;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
 
-    .tab-content { display: none; }
-    .tab-content.active { display: block; }
+        .nav-links a:hover {
+            background-color: var(--primary-dark);
+        }
 
-    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-    th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid #e2e8f0; font-size: 14px; }
-    th { background: #f1f5f9; color: #0f172a; }
+        /* Hero / Home Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary), #0d9488);
+            color: var(--white);
+            text-align: center;
+            padding: 70px 20px;
+        }
 
-    .assistant-box { display: flex; gap: 10px; margin-top: 12px; }
-    .assistant-box input {
-      flex: 1; padding: 10px 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px;
-    }
-    .assistant-box button {
-      padding: 10px 16px; background: #0b3c78; color: #fff; border: none;
-      border-radius: 6px; cursor: pointer; font-size: 14px;
-    }
-    .assistant-reply {
-      margin-top: 14px; padding: 12px; background: #f8fafc;
-      border-left: 4px solid #1d4ed8; border-radius: 4px; font-size: 14px;
-    }
+        .hero h1 {
+            font-size: 2.4rem;
+            margin-bottom: 12px;
+        }
 
-    @media (max-width: 768px) {
-      body { flex-direction: column; }
-      .sidebar { width: 100%; }
-    }
-  </style>
+        .hero p {
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: auto;
+            opacity: 0.95;
+        }
+
+        .hero-meta {
+            margin-top: 15px;
+            font-size: 0.95rem;
+            background: rgba(255, 255, 255, 0.15);
+            display: inline-block;
+            padding: 8px 18px;
+            border-radius: 20px;
+        }
+
+        /* Container & Sections */
+        .container {
+            max-width: 1100px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        section {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border: 1px solid var(--border);
+        }
+
+        h2 {
+            color: var(--primary);
+            border-bottom: 2px solid var(--secondary);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-size: 1.6rem;
+        }
+
+        /* Grid Cards */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--secondary);
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .card h3 {
+            color: var(--primary-dark);
+            margin-bottom: 8px;
+        }
+
+        .role-tag {
+            display: inline-block;
+            background: var(--primary);
+            color: var(--white);
+            font-size: 0.78rem;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        /* Week Tabs (Content & Modules -> Subtopics Week 1 to 6) */
+        .week-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .week-btn {
+            background: var(--secondary);
+            color: var(--primary-dark);
+            border: 1px solid var(--primary);
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .week-btn.active, .week-btn:hover {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .week-content {
+            display: none;
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .week-content.active {
+            display: block;
+        }
+
+        /* Tables for Daywise Logs & Weekly Reports */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        tr:hover {
+            background-color: #f1f5f9;
+        }
+
+        /* Graphs */
+        .chart-box {
+            background: var(--white);
+            padding: 15px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+        }
+
+        /* Team & Faculty Cards */
+        .member-card {
+            text-align: center;
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-top: 4px solid var(--primary);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.04);
+        }
+
+        .member-card h3 {
+            color: var(--text-dark);
+            margin-bottom: 5px;
+        }
+
+        .roll-no {
+            display: inline-block;
+            background: var(--secondary);
+            color: var(--primary-dark);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        /* Group Photos Placeholder */
+        .photo-placeholder {
+            background: #e2e8f0;
+            height: 220px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-weight: 600;
+            border: 2px dashed #94a3b8;
+            text-align: center;
+            padding: 15px;
+        }
+
+        footer {
+            background: var(--text-dark);
+            color: var(--white);
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            font-size: 0.9rem;
+        }
+    </style>
 </head>
 <body>
 
-  <aside class="sidebar">
-    <div class="brand">
-      <img src="AP GOVERNMENT LOGO.png" alt="AP Government Logo" class="emblem-img" />
-      <h2>AP HEALTH AWARENESS</h2>
-      <p>HEALTHCARE AWARENESS &amp; IMPACT</p>
+    <!-- Navbar -->
+    <header>
+        <nav class="navbar">
+            <div class="logo">CSP Health Project</div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#abstract">Abstract</a></li>
+                <li><a href="#diagrams">Diagrams & Modules</a></li>
+                <li><a href="#activities">Health Program & Activities</a></li>
+                <li><a href="#content">Content & Modules</a></li>
+                <li><a href="#logs">Daywise Logs</a></li>
+                <li><a href="#reports">Weekly Reports</a></li>
+                <li><a href="#graphs">Graphs</a></li>
+                <li><a href="#team">Team Members</a></li>
+                <li><a href="#faculty">Faculty</a></li>
+                <li><a href="#photos">Group Photos</a></li>
+                <li><a href="#conclusion">Conclusion</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- 1. Home -->
+    <div id="home" class="hero">
+        <h1>Community Health Awareness & Survey Program</h1>
+        <p>A 6-Week Community Service Project focused on promoting hygiene, preventive healthcare, nutrition, and public health awareness in our local community.</p>
+        <div class="hero-meta">
+            <strong>SREE VENKATESHWARA ENGINEERING COLLEGE, NORTHURAJUPALAM</strong> | Project Location: <strong>NELLORE (CHAKALI STREET SACHIVALAYAM 44/2)</strong>
+        </div>
     </div>
 
-    <div>
-      <div class="menu-title">Main Menu</div>
-      <button class="nav-btn active" onclick="openTab('dashboard', this)">Dashboard</button>
-      <button class="nav-btn" onclick="openTab('programs', this)">Awareness Programs</button>
-      <button class="nav-btn" onclick="openTab('districts', this)">District Monitoring</button>
-      <button class="nav-btn" onclick="openTab('analysis', this)">Impact Analysis</button>
-      <button class="nav-btn" onclick="openTab('assistant', this)">Health Assistant</button>
+    <div class="container">
+
+        <!-- 2. Abstract -->
+        <section id="abstract">
+            <h2>Abstract</h2>
+            <p>
+                Community health plays a vital role in improving the overall quality of life and preventing common illnesses. 
+                As part of our 6-week Community Service Project from <strong>SREE VENKATESHWARA ENGINEERING COLLEGE, NORTHURAJUPALAM</strong>, 
+                conducted at <strong>NELLORE (CHAKALI STREET SACHIVALAYAM 44/2)</strong>, our team carried out door-to-door surveys, 
+                awareness campaigns, and interactive sessions on personal hygiene, balanced nutrition, sanitation, and seasonal disease prevention. 
+                The primary objective of this initiative is to identify local health challenges, educate residents about preventive 
+                healthcare measures, and bridge the gap between local communities and essential public health resources.
+            </p>
+        </section>
+
+        <!-- 3. Diagrams & Modules -->
+        <section id="diagrams">
+            <h2>Diagrams & Modules</h2>
+            <div class="grid-2">
+                <div class="card">
+                    <h3>Module 1: Field Survey & Data Collection</h3>
+                    <p>Door-to-door interaction using structured questionnaires to assess sanitation, drinking water quality, and general health issues.</p>
+                </div>
+                <div class="card">
+                    <h3>Module 2: Data Analysis & Problem Identification</h3>
+                    <p>Categorizing collected data to identify prevalent health concerns such as seasonal fevers, nutritional deficiencies, and hygiene gaps.</p>
+                </div>
+                <div class="card">
+                    <h3>Module 3: Awareness & Educational Campaigns</h3>
+                    <p>Organizing community talks, distributing pamphlets, and demonstrating proper handwashing and water purification methods.</p>
+                </div>
+                <div class="card">
+                    <h3>Module 4: Feedback & Impact Assessment</h3>
+                    <p>Re-visiting households in the final week to evaluate behavioral improvements and document community feedback.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Health Program & Activities -->
+        <section id="activities">
+            <h2>Health Program & Activities</h2>
+            <div class="grid-3">
+                <div class="card">
+                    <h3>Hygiene & Sanitation Drive</h3>
+                    <p>Educated residents on waste segregation, clean surroundings, and proper handwashing techniques to curb infections.</p>
+                </div>
+                <div class="card">
+                    <h3>Nutrition & Diet Counseling</h3>
+                    <p>Conducted awareness sessions for women and children on iron-rich foods, balanced diets, and maternal nutrition.</p>
+                </div>
+                <div class="card">
+                    <h3>Seasonal Disease Prevention</h3>
+                    <p>Guided families on preventing dengue, malaria, and waterborne diseases through mosquito control and safe drinking water.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. Content & Modules (Subtopics: Week 1 - Week 6) -->
+        <section id="content">
+            <h2>Content & Modules (Subtopics: Week 1 – Week 6)</h2>
+            <div class="week-buttons">
+                <button class="week-btn active" onclick="showWeek(1)">Week 1</button>
+                <button class="week-btn" onclick="showWeek(2)">Week 2</button>
+                <button class="week-btn" onclick="showWeek(3)">Week 3</button>
+                <button class="week-btn" onclick="showWeek(4)">Week 4</button>
+                <button class="week-btn" onclick="showWeek(5)">Week 5</button>
+                <button class="week-btn" onclick="showWeek(6)">Week 6</button>
+            </div>
+
+            <div id="week1" class="week-content active">
+                <h3>Week 1: Community Orientation & Baseline Survey</h3>
+                <p>Selected the target locality at NELLORE (CHAKALI STREET SACHIVALAYAM 44/2), obtained permissions from local authorities, designed the health survey questionnaire, and initiated door-to-door visits across 30 households to gather baseline health and sanitation data.</p>
+            </div>
+            <div id="week2" class="week-content">
+                <h3>Week 2: Personal Hygiene & Safe Drinking Water</h3>
+                <p>Analyzed survey data regarding water usage. Conducted demonstrations on boiling/filtering water, safe storage practices, and proper handwashing habits for school children and elders.</p>
+            </div>
+            <div id="week3" class="week-content">
+                <h3>Week 3: Maternal, Child Health & Nutrition</h3>
+                <p>Focused on balanced nutrition using affordable local foods. Educated mothers on anemia prevention, immunization schedules, and child growth monitoring.</p>
+            </div>
+            <div id="week4" class="week-content">
+                <h3>Week 4: Vector-Borne & Seasonal Disease Awareness</h3>
+                <p>Organized an awareness rally and pamphlet distribution on preventing dengue, malaria, and typhoid. Highlighted the importance of eliminating stagnant water around homes.</p>
+            </div>
+            <div id="week5" class="week-content">
+                <h3>Week 5: Lifestyle Diseases & First-Aid Basics</h3>
+                <p>Conducted interactive sessions for middle-aged and elderly residents on blood pressure, diabetes management, regular walking, and basic home first-aid kits.</p>
+            </div>
+            <div id="week6" class="week-content">
+                <h3>Week 6: Impact Evaluation & Final Documentation</h3>
+                <p>Conducted a post-awareness follow-up survey, compiled statistical charts comparing pre- and post-program awareness levels, and prepared the final project report.</p>
+            </div>
+        </section>
+
+        <!-- 6. Daywise Logs -->
+        <section id="logs">
+            <h2>Daywise Logs (Sample Logbook)</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Day / Date</th>
+                        <th>Activity Performed</th>
+                        <th>Outcome / Observation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Day 1</td>
+                        <td>Area selection and interaction with local community leaders at Chakali Street Sachivalayam 44/2</td>
+                        <td>Identified key residential streets for the health survey</td>
+                    </tr>
+                    <tr>
+                        <td>Day 2</td>
+                        <td>Door-to-door survey on drinking water and sanitation</td>
+                        <td>Surveyed 25 houses; noted reliance on untreated tap water</td>
+                    </tr>
+                    <tr>
+                        <td>Day 3</td>
+                        <td>Awareness session on hand hygiene and waste disposal</td>
+                        <td>Distributed informational flyers; positive resident participation</td>
+                    </tr>
+                    <tr>
+                        <td>Day 4</td>
+                        <td>Nutrition and seasonal fever prevention campaign</td>
+                        <td>Educated 40+ residents on mosquito breeding prevention</td>
+                    </tr>
+                    <tr>
+                        <td>Day 5</td>
+                        <td>Follow-up survey and feedback collection</td>
+                        <td>Observed increased adoption of boiled/filtered water practices</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- 7. Weekly Reports -->
+        <section id="reports">
+            <h2>Weekly Reports</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Week</th>
+                        <th>Focus Area</th>
+                        <th>Households Covered</th>
+                        <th>Key Deliverable</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Week 1</td>
+                        <td>Baseline Health & Sanitation Survey</td>
+                        <td>30 Households</td>
+                        <td>Survey Dataset & Problem Identification</td>
+                    </tr>
+                    <tr>
+                        <td>Week 2</td>
+                        <td>Hygiene & Safe Water Practices</td>
+                        <td>35 Households</td>
+                        <td>Live Hygiene Demonstration</td>
+                    </tr>
+                    <tr>
+                        <td>Week 3</td>
+                        <td>Nutrition & Women/Child Health</td>
+                        <td>30 Households</td>
+                        <td>Diet Chart Distribution</td>
+                    </tr>
+                    <tr>
+                        <td>Week 4</td>
+                        <td>Seasonal Disease Prevention</td>
+                        <td>40 Households</td>
+                        <td>Cleanliness & Mosquito Control Drive</td>
+                    </tr>
+                    <tr>
+                        <td>Week 5</td>
+                        <td>Lifestyle Health & First Aid</td>
+                        <td>25 Households</td>
+                        <td>Elderly Health Counseling</td>
+                    </tr>
+                    <tr>
+                        <td>Week 6</td>
+                        <td>Post-Program Evaluation</td>
+                        <td>40 Households</td>
+                        <td>Impact Analysis & Final Report</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- 8. Graphs (2 Graphs) -->
+        <section id="graphs">
+            <h2>Graphs (Survey & Impact Analysis)</h2>
+            <div class="grid-2">
+                <div class="chart-box">
+                    <h3 style="text-align:center; margin-bottom:10px;">Graph 1: Common Health Issues Identified</h3>
+                    <canvas id="healthIssuesChart"></canvas>
+                </div>
+                <div class="chart-box">
+                    <h3 style="text-align:center; margin-bottom:10px;">Graph 2: Awareness Level (Before vs After)</h3>
+                    <canvas id="awarenessChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- 9. Team Members (Poorna in 2nd Place) -->
+        <section id="team">
+            <h2>Team Members</h2>
+            <div class="grid-2">
+                <div class="member-card">
+                    <h3>1. G. Vindhya</h3>
+                    <span class="roll-no">24JNA05234</span>
+                </div>
+                <div class="member-card">
+                    <h3>2. G. Poorna Chandrika</h3>
+                    <span class="roll-no">24JNA05267</span>
+                </div>
+                <div class="member-card">
+                    <h3>3. G. Kousalya</h3>
+                    <span class="roll-no">24JNA05251</span>
+                </div>
+                <div class="member-card">
+                    <h3>4. G. Harshavardhini</h3>
+                    <span class="roll-no">24JNA05271</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 10. Faculty & Mentors (Order: Principal, Vice Principal, HOD, Class In-charge, Guide, Coordinator) -->
+        <section id="faculty">
+            <h2>Faculty & Mentors</h2>
+            <p style="margin-bottom: 18px; color: var(--text-muted);">
+                <strong>College:</strong> SREE VENKATESHWARA ENGINEERING COLLEGE, NORTHURAJUPALAM
+            </p>
+            <div class="grid-2">
+                <!-- 1. Principal -->
+                <div class="card">
+                    <span class="role-tag">Principal</span>
+                    <h3>DR. M. SREENIVASA KUMAR</h3>
+                    <p><strong>Qualification:</strong> Principal</p>
+                </div>
+
+                <!-- 2. Vice Principal -->
+                <div class="card">
+                    <span class="role-tag">Vice Principal</span>
+                    <h3>DR. S. JAYALAKSHMI</h3>
+                    <p><strong>Qualification:</strong> Vice principal</p>
+                </div>
+
+                <!-- 3. HOD -->
+                <div class="card">
+                    <span class="role-tag">Head of Department (HOD)</span>
+                    <h3>MRS. SK. FARHANA</h3>
+                    <p><strong>Qualification:</strong> M.tech, Dept. of CSE</p>
+                </div>
+
+                <!-- 4. Class In-charge -->
+                <div class="card">
+                    <span class="role-tag">Class In-Charge</span>
+                    <h3>MRS. SK. SHAHINA</h3>
+                    <p><strong>Qualification:</strong> M.tech</p>
+                </div>
+
+                <!-- 5. Project Guide -->
+                <div class="card">
+                    <span class="role-tag">Project Guide</span>
+                    <h3>MS. P. DEVAMMA</h3>
+                    <p><strong>Qualification:</strong> M.tech, Assistant professor</p>
+                </div>
+
+                <!-- 6. CSP Coordinator -->
+                <div class="card">
+                    <span class="role-tag">CSP Coordinator</span>
+                    <h3>MR. R. RAMAIAH</h3>
+                    <p><strong>Qualification:</strong> Assistant professor, CSE</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 11. Group Photos -->
+        <section id="photos">
+            <h2>Group Photos</h2>
+            <div class="grid-3">
+                <!-- Replace the div below with <img src="photo1.jpg" style="width:100%; border-radius:8px;"> when adding real photos -->
+                <div class="photo-placeholder">
+                    Field Survey Photo 1<br>(Replace with &lt;img src="photo1.jpg"&gt;)
+                </div>
+                <div class="photo-placeholder">
+                    Health Awareness Session Photo 2<br>(Replace with &lt;img src="photo2.jpg"&gt;)
+                </div>
+                <div class="photo-placeholder">
+                    Team with Community Photo 3<br>(Replace with &lt;img src="photo3.jpg"&gt;)
+                </div>
+            </div>
+        </section>
+
+        <!-- 12. Conclusion -->
+        <section id="conclusion">
+            <h2>Conclusion</h2>
+            <p>
+                The 6-week Community Health Awareness Program conducted at NELLORE (CHAKALI STREET SACHIVALAYAM 44/2) 
+                under the guidance of SREE VENKATESHWARA ENGINEERING COLLEGE, NORTHURAJUPALAM successfully engaged local 
+                residents and promoted practical, preventive healthcare habits. Through structured surveys, interactive 
+                demonstrations, and consistent follow-ups, our team observed a noticeable improvement in community awareness 
+                regarding clean drinking water, sanitation, and seasonal disease prevention. This project also enhanced our 
+                teamwork, communication, and social responsibility skills.
+            </p>
+        </section>
+
     </div>
-  </aside>
 
-  <main class="main">
-    <div class="header">
-      <img src="AP GOVERNMENT LOGO.png" alt="AP Logo" class="header-img" />
-      <div>
-        <h1>ANDHRA PRADESH - HEALTH CARE AWARENESS</h1>
-        <p>Community Health Care Awareness Programs and Impact Monitoring System</p>
-      </div>
-    </div>
+    <footer>
+        <p>SREE VENKATESHWARA ENGINEERING COLLEGE, NORTHURAJUPALAM | CSP Health Project (NELLORE - CHAKALI STREET SACHIVALAYAM 44/2) | Roll Nos: 24JNA05234, 24JNA05267, 24JNA05251, 24JNA05271</p>
+    </footer>
 
-    <div class="status">Application is running successfully</div>
+    <!-- JavaScript for Week Tabs & 2 Graphs -->
+    <script>
+        // Week 1 - 6 Tab Switcher
+        function showWeek(weekNum) {
+            document.querySelectorAll('.week-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.week-btn').forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById('week' + weekNum).classList.add('active');
+            document.querySelectorAll('.week-btn')[weekNum - 1].classList.add('active');
+        }
 
-    <!-- Dashboard Tab -->
-    <section id="dashboard" class="tab-content active">
-      <div class="section-card">
-        <h3>Monitoring Dashboard</h3>
-        <div class="stats-grid">
-          <div class="stat-box">
-            <div class="stat-label">Total Programs</div>
-            <div class="stat-val">5</div>
-          </div>
-          <div class="stat-box">
-            <div class="stat-label">Total Participants</div>
-            <div class="stat-val">7,800</div>
-          </div>
-          <div class="stat-box">
-            <div class="stat-label">Checkups Completed</div>
-            <div class="stat-val">6,380</div>
-          </div>
-          <div class="stat-box">
-            <div class="stat-label">Avg Impact Gain</div>
-            <div class="stat-val gain">+41.4%</div>
-          </div>
-        </div>
-      </div>
+        // Graph 1: Bar Chart
+        const ctx1 = document.getElementById('healthIssuesChart').getContext('2d');
+        new Chart(ctx1, {
+            type: 'bar',
+            data: {
+                labels: ['Seasonal Fever', 'Waterborne Issues', 'Nutritional Deficiency', 'Hygiene Gaps', 'BP / Diabetes'],
+                datasets: [{
+                    label: 'Number of Households Affected',
+                    data: [28, 19, 22, 25, 15],
+                    backgroundColor: '#0f766e',
+                    borderRadius: 5
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: { y: { beginAtZero: true } }
+            }
+        });
 
-      <div class="section-card">
-        <h3>Awareness Impact: Before vs After Program</h3>
-        <div class="chart-wrap">
-          <div class="bar-group">
-            <div class="bars">
-              <div class="bar before" style="height: 45%;" title="Before: 45%"></div>
-              <div class="bar after" style="height: 85%;" title="After: 85%"></div>
-            </div>
-            <div class="bar-label">Prog 1</div>
-          </div>
-          <div class="bar-group">
-            <div class="bars">
-              <div class="bar before" style="height: 40%;" title="Before: 40%"></div>
-              <div class="bar after" style="height: 82%;" title="After: 82%"></div>
-            </div>
-            <div class="bar-label">Prog 2</div>
-          </div>
-          <div class="bar-group">
-            <div class="bars">
-              <div class="bar before" style="height: 50%;" title="Before: 50%"></div>
-              <div class="bar after" style="height: 90%;" title="After: 90%"></div>
-            </div>
-            <div class="bar-label">Prog 3</div>
-          </div>
-          <div class="bar-group">
-            <div class="bars">
-              <div class="bar before" style="height: 38%;" title="Before: 38%"></div>
-              <div class="bar after" style="height: 78%;" title="After: 78%"></div>
-            </div>
-            <div class="bar-label">Prog 4</div>
-          </div>
-          <div class="bar-group">
-            <div class="bars">
-              <div class="bar before" style="height: 42%;" title="Before: 42%"></div>
-              <div class="bar after" style="height: 86%;" title="After: 86%"></div>
-            </div>
-            <div class="bar-label">Prog 5</div>
-          </div>
-        </div>
-        <div class="legend">
-          <span><i class="dot" style="background:#64748b;"></i> Before Awareness (%)</span>
-          <span><i class="dot" style="background:#1d4ed8;"></i> After Awareness (%)</span>
-        </div>
-      </div>
-    </section>
+        // Graph 2: Comparison Chart (Before vs After)
+        const ctx2 = document.getElementById('awarenessChart').getContext('2d');
+        new Chart(ctx2, {
+            type: 'line',
+            data: {
+                labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6'],
+                datasets: [
+                    {
+                        label: 'Awareness Score (%)',
+                        data: [35, 48, 60, 74, 85, 92],
+                        borderColor: '#0d9488',
+                        backgroundColor: 'rgba(13, 148, 136, 0.2)',
+                        fill: true,
+                        tension: 0.3
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: { y: { beginAtZero: true, max: 100 } }
+            }
+        });
+    </script>
 
-    <!-- Awareness Programs Tab -->
-    <section id="programs" class="tab-content">
-      <div class="section-card">
-        <h3>Awareness Programs</h3>
-        <table>
-          <tr><th>Program</th><th>Focus Area</th><th>Participants</th><th>Status</th></tr>
-          <tr><td>Prog 1</td><td>Maternal &amp; Child Nutrition</td><td>1,650</td><td>Completed</td></tr>
-          <tr><td>Prog 2</td><td>Hygiene &amp; Sanitation Drive</td><td>1,500</td><td>Completed</td></tr>
-          <tr><td>Prog 3</td><td>Preventive NCD Screening</td><td>1,800</td><td>Active</td></tr>
-          <tr><td>Prog 4</td><td>Vector-Borne Disease Control</td><td>1,450</td><td>Active</td></tr>
-          <tr><td>Prog 5</td><td>Mental Health &amp; Wellness</td><td>1,400</td><td>Scheduled</td></tr>
-        </table>
-      </div>
-    </section>
-
-    <!-- District Monitoring Tab -->
-    <section id="districts" class="tab-content">
-      <div class="section-card">
-        <h3>District Monitoring</h3>
-        <table>
-          <tr><th>District</th><th>Camps Held</th><th>Checkups</th><th>Awareness Gain</th></tr>
-          <tr><td>Visakhapatnam</td><td>14</td><td>1,420</td><td>+43.2%</td></tr>
-          <tr><td>Guntur</td><td>12</td><td>1,290</td><td>+40.8%</td></tr>
-          <tr><td>Nellore</td><td>11</td><td>1,210</td><td>+42.1%</td></tr>
-          <tr><td>Kurnool</td><td>10</td><td>1,260</td><td>+39.6%</td></tr>
-          <tr><td>Tirupati</td><td>11</td><td>1,200</td><td>+41.3%</td></tr>
-        </table>
-      </div>
-    </section>
-
-    <!-- Impact Analysis Tab -->
-    <section id="analysis" class="tab-content">
-      <div class="section-card">
-        <h3>Impact Analysis</h3>
-        <p>Across <strong>5</strong> community healthcare awareness programs and <strong>7,800</strong> participants, <strong>6,380</strong> health checkups were completed with an average awareness improvement of <strong>+41.4%</strong>.</p>
-      </div>
-    </section>
-
-    <!-- Health Assistant Tab -->
-    <section id="assistant" class="tab-content">
-      <div class="section-card">
-        <h3>Health Assistant</h3>
-        <p>Ask about programs, participants, checkups, or impact metrics.</p>
-        <div class="assistant-box">
-          <input id="qInput" type="text" placeholder="Example: What is the avg impact gain?" />
-          <button onclick="askAssistant()">Ask</button>
-        </div>
-        <div id="qReply" class="assistant-reply">
-          Average impact gain is <strong>+41.4%</strong> across 5 programs with 7,800 participants and 6,380 completed checkups.
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <script>
-    function openTab(tabId, btn) {
-      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-      document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
-      document.getElementById(tabId).classList.add('active');
-      btn.classList.add('active');
-    }
-
-    function askAssistant() {
-      const q = document.getElementById('qInput').value.toLowerCase();
-      const reply = document.getElementById('qReply');
-      if (!q.trim()) {
-        reply.innerHTML = "Please enter a question about the awareness programs or impact.";
-        return;
-      }
-      if (q.includes("impact") || q.includes("gain")) {
-        reply.innerHTML = "The average awareness impact gain across all 5 programs is <strong>+41.4%</strong>.";
-      } else if (q.includes("checkup") || q.includes("participant")) {
-        reply.innerHTML = "There are <strong>7,800</strong> total participants and <strong>6,380</strong> completed checkups.";
-      } else if (q.includes("program")) {
-        reply.innerHTML = "There are <strong>5</strong> awareness programs covering nutrition, hygiene, NCD screening, vector-borne disease control, and mental health.";
-      } else {
-        reply.innerHTML = "Monitoring summary: 5 programs, 7,800 participants, 6,380 checkups completed, and +41.4% average impact gain.";
-      }
-    }
-  </script>
 </body>
 </html>
